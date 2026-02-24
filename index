@@ -1,0 +1,539 @@
+import streamlit as st
+
+st.set_page_config(page_title="Obrigado pela sua compra | SporTech", layout="centered")
+
+# Placeholders
+nome_do_cliente = "{{nome_do_cliente}}"
+numero_do_pedido = "{{numero_do_pedido}}"
+valor_do_pedido = "{{valor_do_pedido}}"
+email_do_cliente = "{{email_do_cliente}}"
+
+st.markdown(f"""
+<style>
+:root {{
+  --blue: #02bfe4;
+  --text: #0b1220;
+  --muted: #475569;
+  --border: #e5e7eb;
+  --shadow: 0 10px 25px rgba(0,0,0,.08);
+  --radius: 18px;
+}}
+
+html, body, .stApp {{
+  background:#fff !important;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, sans-serif;
+}}
+
+.block-container {{
+  max-width: 860px;
+  padding: 28px 18px 60px;
+}}
+
+a {{ text-decoration:none; }}
+h1,h2,h3 {{ color: var(--text); margin:0; }}
+p {{ color: var(--muted); margin: 6px 0 0; line-height:1.45; }}
+
+.wrap {{
+  max-width: 720px;
+  margin: 0 auto;
+}}
+
+.center {{ text-align:center; }}
+
+.logo {{
+  font-weight: 900;
+  letter-spacing:.2px;
+  margin-bottom: 10px;
+}}
+
+.title {{
+  font-size: 28px;
+  font-weight: 900;
+  margin-top: 6px;
+}}
+
+.sub {{
+  font-size: 15px;
+  margin-top: 6px;
+}}
+
+.social-row {{
+  display:flex;
+  justify-content:center;
+  gap: 12px;
+  margin: 18px 0 26px;
+}}
+
+.social {{
+  width:46px; height:46px;
+  border-radius: 999px;
+  border: 2px solid var(--blue);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color: var(--blue);
+  background:#fff;
+  font-size: 18px;
+}}
+
+.card {{
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 20px;
+  margin: 18px 0;
+}}
+
+.card h3 {{
+  font-size: 16px;
+  font-weight: 900;
+  margin-bottom: 12px;
+}}
+
+.grid-2 {{
+  display:grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+}}
+
+@media(min-width: 720px) {{
+  .grid-2 {{
+    grid-template-columns: 1fr 1fr;
+  }}
+}}
+
+.kv {{
+  color: var(--text);
+  font-size: 14px;
+  line-height: 1.55;
+}}
+
+.kv b {{
+  font-weight: 800;
+}}
+
+.section-title {{
+  text-align:center;
+  font-size: 18px;
+  font-weight: 900;
+  margin: 28px 0 14px;
+}}
+
+.products {{
+  display:grid;
+  grid-template-columns: 1fr;
+  gap: 18px;
+}}
+
+@media(min-width: 860px) {{
+  .products {{
+    grid-template-columns: repeat(3, 1fr);
+  }}
+}}
+
+.pcard {{
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius: 20px;
+  box-shadow: var(--shadow);
+  padding: 18px;
+}}
+
+.picon {{
+  background: linear-gradient(180deg, #e6f9fd, #f4fdff);
+  border-radius: 16px;
+  height: 110px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size: 40px;
+  color: var(--blue);
+  margin-bottom: 14px;
+}}
+
+.ptitle {{
+  font-size: 15px;
+  font-weight: 900;
+  color: var(--text);
+  margin-bottom: 6px;
+}}
+
+.pdesc {{
+  color: var(--muted);
+  font-size: 13px;
+  margin-bottom: 14px;
+}}
+
+.btn {{
+  display:block;
+  background: var(--blue);
+  color: #fff !important;
+  text-align:center;
+  padding: 12px 14px;
+  border-radius: 14px;
+  font-weight: 900;
+}}
+
+.offer {{
+  margin-top: 26px;
+  background: var(--blue);
+  border-radius: 26px;
+  padding: 22px;
+  overflow:hidden;
+  position:relative;
+}}
+
+.offer:before {{
+  content:"";
+  position:absolute;
+  right:-70px;
+  top:-70px;
+  width:200px;
+  height:200px;
+  background: rgba(255,255,255,.14);
+  border-radius: 50%;
+}}
+
+.badge {{
+  display:inline-block;
+  background:#ffd500;
+  color:#000 !important;
+  font-size: 12px;
+  font-weight: 900;
+  padding: 6px 12px;
+  border-radius: 999px;
+  margin-bottom: 10px;
+}}
+
+.offer h2 {{
+  color:#fff;
+  font-size: 24px;
+  font-weight: 900;
+  margin: 6px 0 4px;
+}}
+
+.offer .osub {{
+  color:#eafcff;
+  font-weight: 700;
+  margin: 0 0 10px;
+}}
+
+.offer .otext {{
+  color:#eafcff;
+  margin: 10px 0 0;
+}}
+
+.timer {{
+  display:inline-flex;
+  gap: 12px;
+  background: rgba(255,255,255,.16);
+  border: 1px solid rgba(255,255,255,.18);
+  padding: 12px 14px;
+  border-radius: 16px;
+  margin: 10px 0 12px;
+}}
+
+.tbox {{
+  width: 70px;
+  background: rgba(255,255,255,.14);
+  border-radius: 14px;
+  padding: 10px 8px;
+  text-align:center;
+}}
+
+.tnum {{
+  color:#fff;
+  font-weight: 900;
+  font-size: 20px;
+  line-height:1.05;
+}}
+
+.tlbl {{
+  color:#eafcff;
+  font-size: 12px;
+}}
+
+.inner {{
+  margin-top: 16px;
+  background:#fff;
+  border-radius: 20px;
+  padding: 18px;
+  box-shadow: var(--shadow);
+}}
+
+.innergrid {{
+  display:grid;
+  grid-template-columns: 84px 1fr;
+  gap: 14px;
+  align-items:center;
+}}
+
+.ic {{
+  width:84px; height:84px;
+  border-radius: 16px;
+  background: linear-gradient(180deg, #e6f9fd, #f4fdff);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size: 40px;
+  color: var(--blue);
+}}
+
+.plus {{
+  display:inline-block;
+  background: #e6f9fd;
+  color: var(--blue);
+  font-size: 12px;
+  font-weight: 900;
+  padding: 6px 10px;
+  border-radius: 999px;
+  margin-bottom: 8px;
+}}
+
+.ititle {{
+  font-size: 15px;
+  font-weight: 900;
+  color: var(--text);
+  margin: 2px 0 8px;
+}}
+
+.ul {{
+  list-style:none;
+  padding:0;
+  margin:0;
+}}
+
+.ul li {{
+  margin: 6px 0;
+  color: var(--text);
+  font-size: 13.5px;
+}}
+
+.ul li:before {{
+  content:"✓";
+  color:#22c55e;
+  font-weight: 900;
+  margin-right: 10px;
+}}
+
+.pricerow {{
+  display:flex;
+  gap: 10px;
+  align-items: baseline;
+  margin-top: 10px;
+}}
+
+.old {{
+  color:#94a3b8;
+  text-decoration: line-through;
+  font-weight: 800;
+}}
+
+.new {{
+  color: var(--blue);
+  font-weight: 900;
+  font-size: 22px;
+}}
+
+.cta {{
+  display:block;
+  margin-top: 14px;
+  background:#22c55e;
+  color:#fff !important;
+  text-align:center;
+  padding: 14px 16px;
+  border-radius: 14px;
+  font-weight: 900;
+}}
+
+.of-foot {{
+  text-align:center;
+  color:#eafcff;
+  font-size: 12px;
+  margin-top: 12px;
+}}
+
+.links {{
+  display:grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+  margin-top: 12px;
+}}
+
+@media(min-width: 720px) {{
+  .links {{
+    grid-template-columns: 1fr 1fr;
+  }}
+}}
+
+.lcard {{
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius: 18px;
+  box-shadow: var(--shadow);
+  padding: 18px;
+}}
+
+.ltop {{
+  display:flex;
+  gap: 10px;
+  align-items:center;
+  margin-bottom: 6px;
+}}
+
+.licon {{
+  width:38px; height:38px;
+  border-radius: 12px;
+  background: #e6f9fd;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color: var(--blue);
+  font-size: 18px;
+}}
+
+.ltitle {{
+  font-weight: 900;
+  color: var(--text);
+}}
+
+.lsub {{
+  color: var(--muted);
+  font-size: 13px;
+  margin-top: 2px;
+}}
+
+.lbtn {{
+  margin-top: 12px;
+  display:block;
+  border:1px solid var(--border);
+  border-radius: 14px;
+  padding: 12px;
+  text-align:center;
+  color: var(--text);
+  font-weight: 900;
+}}
+
+</style>
+
+<div class="wrap">
+
+  <!-- SEÇÃO 1 -->
+  <div class="center">
+    <div class="logo">SporTech</div>
+    <div class="title">Obrigado pela sua compra, {nome_do_cliente}! 🎉</div>
+    <div class="sub">Seu pedido foi confirmado e está sendo processado.</div>
+  </div>
+
+  <!-- SEÇÃO 2 -->
+  <div class="social-row">
+    <div class="social" title="Instagram">📷</div>
+    <div class="social" title="Facebook">📘</div>
+  </div>
+
+  <!-- SEÇÃO 3 -->
+  <div class="card">
+    <h3>Detalhes do pedido</h3>
+    <div class="grid-2">
+      <div class="kv">
+        <b>Pedido:</b> {numero_do_pedido}<br/>
+        <b>Valor total:</b> {valor_do_pedido}
+      </div>
+      <div class="kv">
+        <b>Email:</b> {email_do_cliente}
+      </div>
+    </div>
+  </div>
+
+  <!-- SEÇÃO 4 -->
+  <div class="section-title">Produtos que combinam com você</div>
+
+  <div class="products">
+    <div class="pcard">
+      <div class="picon">🧪</div>
+      <div class="ptitle">Pomada Fisiofort Premium Bio – 150g</div>
+      <div class="pdesc">Alívio muscular profundo com ingredientes naturais</div>
+      <a class="btn" href="https://lojasportech.com/products/pomada-fisiofort-premium-bio-150g?_pos=1&_sid=f0deba555&_ss=r" target="_blank">Comprar agora</a>
+    </div>
+
+    <div class="pcard">
+      <div class="picon">❤️</div>
+      <div class="ptitle">NasalFlex – Respire Melhor, Viva Melhor</div>
+      <div class="pdesc">Melhore sua respiração e qualidade de sono</div>
+      <a class="btn" href="https://lojasportech.com/products/nasalflex-respire-melhor-viva-melhor?variant=50620579610943" target="_blank">Comprar agora</a>
+    </div>
+
+    <div class="pcard">
+      <div class="picon">🛡️</div>
+      <div class="ptitle">KneePro – Suporte para Joelho</div>
+      <div class="pdesc">Proteção e estabilidade para suas articulações</div>
+      <a class="btn" href="https://lojasportech.com/products/kneepro?variant=51188222034239" target="_blank">Comprar agora</a>
+    </div>
+  </div>
+
+  <!-- SEÇÃO 5 (já pronta) -->
+  <div class="offer">
+    <span class="badge">60% OFF</span>
+    <h2>Oferta Especial Liberada! 🎁</h2>
+    <div class="osub">Antes de finalizar tudo…</div>
+
+    <div class="timer" aria-label="contador">
+      <div class="tbox"><div class="tnum">00</div><div class="tlbl">horas</div></div>
+      <div class="tbox"><div class="tnum">53</div><div class="tlbl">min</div></div>
+      <div class="tbox"><div class="tnum">00</div><div class="tlbl">seg</div></div>
+    </div>
+
+    <div class="otext">Liberamos uma condição especial para você reforçar seu tratamento aproveitando o mesmo envio.</div>
+
+    <div class="inner">
+      <div class="innergrid">
+        <div class="ic">⚡</div>
+        <div>
+          <span class="plus">+20 PEÇAS</span>
+          <div class="ititle">FlexLive – Adesivos Terapêuticos</div>
+          <ul class="ul">
+            <li>Mais 20 adesivos FlexLive</li>
+            <li>Envio com frete grátis</li>
+            <li>Tudo automático, sem preencher nada de novo</li>
+          </ul>
+          <div class="pricerow">
+            <span class="old">R$99,90</span>
+            <span class="new">R$39,90</span>
+          </div>
+        </div>
+      </div>
+      <a class="cta" href="#">QUERO APROVEITAR ESTA OFERTA</a>
+    </div>
+
+    <div class="of-foot">Oferta exclusiva para quem acabou de comprar. Tempo limitado.</div>
+  </div>
+
+  <!-- SEÇÃO 6 -->
+  <div class="section-title">Links úteis</div>
+  <div class="links">
+    <div class="lcard">
+      <div class="ltop">
+        <div class="licon">🌐</div>
+        <div>
+          <div class="ltitle">Ir para o site</div>
+          <div class="lsub">Conheça todos os produtos SporTech</div>
+        </div>
+      </div>
+      <a class="lbtn" href="https://lojasportech.com" target="_blank">Acessar</a>
+    </div>
+
+    <div class="lcard">
+      <div class="ltop">
+        <div class="licon">💬</div>
+        <div>
+          <div class="ltitle">Falar com o suporte</div>
+          <div class="lsub">Atendimento via WhatsApp</div>
+        </div>
+      </div>
+      <a class="lbtn" href="https://wa.me/5500000000000" target="_blank">WhatsApp</a>
+    </div>
+  </div>
+
+</div>
+""", unsafe_allow_html=True)
